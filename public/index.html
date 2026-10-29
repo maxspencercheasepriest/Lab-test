@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Programme</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script type="importmap">{ "imports": { "three": "/vendor/three/three.module.js" } }</script>
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <!-- In-game HUD -->
+  <div id="hud" class="hidden">
+    <div id="prompt"></div>
+    <div id="subtitle"></div>
+    <div id="toast"></div>
+    <div id="status">
+      <div id="battery"><span>NV</span><div class="bar"><i></i></div></div>
+      <div id="carry"></div>
+      <div id="mic"></div>
+    </div>
+    <div id="hold"><i></i></div>
+    <div id="notebook" class="hidden">
+      <h2>Lesson One — Homework</h2>
+      <ul id="tasks"></ul>
+      <p class="keys">
+        WASD move · Shift run · C crouch · E use (hold for plate/lever) · Q / click throw bottle · G drop<br>
+        N night vision · hold R radio · M mute · Tab this notebook
+      </p>
+    </div>
+    <div id="banner" class="hidden"></div>
+  </div>
+
+  <!-- Click to capture the mouse -->
+  <div id="resume" class="hidden"><p>Click to continue the Lesson</p></div>
+
+  <!-- Lobby -->
+  <div id="lobby">
+    <div class="card">
+      <h1>THE PROGRAMME</h1>
+      <p class="tag">A residential behavioural course. Pennines, 1974.</p>
+
+      <div id="join">
+        <label>Your name <input id="name" maxlength="16" placeholder="Pupil" autocomplete="off"></label>
+        <div class="row">
+          <button id="create">Create a room</button>
+        </div>
+        <div class="row">
+          <input id="code" maxlength="4" placeholder="CODE" autocomplete="off">
+          <button id="joinBtn">Join room</button>
+        </div>
+        <p class="small">Microphone is used for proximity voice chat. Headphones strongly recommended.</p>
+      </div>
+
+      <div id="room" class="hidden">
+        <p>Room code <b id="roomCode"></b> — send it to your friends.</p>
+        <ul id="roster"></ul>
+        <p id="micState" class="small"></p>
+        <button id="start" class="hidden">Begin Lesson One</button>
+        <p id="waiting" class="small hidden">Waiting for the host to begin…</p>
+      </div>
+
+      <p id="error" class="error"></p>
+      <details>
+        <summary>How to play</summary>
+        <p>Ring the four chapel bells. Return the three film reels to the projector. Someone stands on the plate in the old classroom to raise the gate, while someone else fetches the study key. Then unlock the exit and go home.</p>
+        <p>The Prefect hunts by sound. Walking is quiet, running is loud, crouching is silent. Talking carries. The bells carry everywhere. Hide in lockers. Throw bottles to lead him away. If he catches you, a friend can pull the lever in Correction to let you out.</p>
+      </details>
+    </div>
+  </div>
+
+  <div id="end" class="hidden"><div class="card"><h1 id="endTitle"></h1><p id="endText"></p><p class="small">Back to the lobby in a moment…</p></div></div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

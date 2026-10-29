@@ -1,0 +1,35 @@
+{
+  "name": "the-programme",
+  "version": "1.0.0",
+  "description": "Co-op horror: survive the Lesson.",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node test/sim.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxspencercheasepriest/lab-test.git"
+  },
+  "keywords": [
+    "game",
+    "horror",
+    "coop"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/maxspencercheasepriest/lab-test/issues"
+  },
+  "homepage": "https://github.com/maxspencercheasepriest/lab-test#readme",
+  "dependencies": {
+    "three": "^0.186.1",
+    "ws": "^8.22.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

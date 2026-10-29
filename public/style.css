@@ -1,0 +1,48 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; color: #cfe8cf; font-family: 'VT323', monospace; overflow: hidden; }
+canvas#view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.hidden { display: none !important; }
+
+/* Lobby */
+#lobby, #end, #resume { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 45%, rgba(0,0,0,0.15) 0, rgba(0,0,0,0.75) 70%); }
+#resume { background: rgba(0,0,0,0.6); cursor: pointer; font-size: 28px; letter-spacing: 2px; }
+.card { width: min(460px, 92vw); padding: 28px; border: 1px solid #2b4a2e; background: rgba(4,10,5,0.9); box-shadow: 0 0 40px rgba(60,255,90,0.08); }
+h1 { font-family: 'Special Elite', monospace; font-weight: normal; letter-spacing: 6px; margin: 0 0 4px; color: #e8e2d0; font-size: 34px; }
+.tag { margin: 0 0 22px; color: #7b9a7d; font-size: 20px; }
+label { display: block; font-size: 20px; margin-bottom: 14px; }
+input { font: inherit; font-size: 22px; background: #050a05; color: #cfe8cf; border: 1px solid #2b4a2e; padding: 6px 10px; width: 100%; margin-top: 4px; }
+#code { width: 110px; text-transform: uppercase; letter-spacing: 4px; margin: 0; }
+button { font: inherit; font-size: 22px; background: #13301a; color: #dff5df; border: 1px solid #3c7a46; padding: 6px 16px; cursor: pointer; }
+button:hover { background: #1c4626; }
+.row { display: flex; gap: 10px; margin: 10px 0; align-items: center; }
+.small { font-size: 17px; color: #7b9a7d; }
+.error { color: #ff7a6a; min-height: 1em; font-size: 19px; }
+#roster { list-style: none; padding: 0; font-size: 22px; }
+#roster li::before { content: '▸ '; color: #3c7a46; }
+#roomCode { font-size: 30px; letter-spacing: 6px; color: #e8e2d0; }
+details { margin-top: 18px; font-size: 18px; color: #9ab89c; }
+summary { cursor: pointer; color: #cfe8cf; }
+
+/* HUD */
+#hud { position: fixed; inset: 0; pointer-events: none; }
+#prompt { position: absolute; left: 50%; top: 62%; transform: translateX(-50%); font-size: 24px; color: #dfffe0; text-shadow: 0 0 6px #000, 0 0 2px #000; }
+#subtitle { position: absolute; left: 50%; bottom: 9%; transform: translateX(-50%); width: min(780px, 90vw); text-align: center; font-family: 'Special Elite', monospace; font-size: 20px; color: #f0e6c8; text-shadow: 0 0 8px #000, 0 0 3px #000; opacity: 0; transition: opacity 0.6s; }
+#subtitle.show { opacity: 1; }
+#subtitle::before { content: 'TANNOY: '; color: #b9a26a; }
+#toast { position: absolute; left: 50%; top: 20%; transform: translateX(-50%); font-size: 24px; color: #ffe0c0; text-shadow: 0 0 6px #000; opacity: 0; transition: opacity 0.4s; }
+#toast.show { opacity: 1; }
+#status { position: absolute; left: 22px; bottom: 18px; font-size: 20px; color: #7fbf86; display: flex; flex-direction: column; gap: 4px; text-shadow: 0 0 4px #000; }
+#battery { display: flex; align-items: center; gap: 8px; }
+#battery .bar { width: 90px; height: 9px; border: 1px solid #3c7a46; }
+#battery .bar i { display: block; height: 100%; background: #4cff6a; width: 100%; }
+#battery.low .bar i { background: #ff5a3a; }
+#mic.on { color: #dfffe0; }
+#hold { position: absolute; left: 50%; top: 58%; transform: translateX(-50%); width: 160px; height: 6px; border: 1px solid #3c7a46; display: none; }
+#hold.show { display: block; }
+#hold i { display: block; height: 100%; background: #9fffaa; width: 0; }
+#notebook { position: absolute; right: 30px; top: 30px; width: 380px; padding: 18px 22px; background: #d9d2bd; color: #2a2318; font-family: 'Special Elite', monospace; transform: rotate(1.2deg); box-shadow: 4px 6px 0 rgba(0,0,0,0.6); }
+#notebook h2 { margin: 0 0 10px; font-weight: normal; font-size: 20px; }
+#notebook ul { padding-left: 18px; font-size: 18px; line-height: 1.5; }
+#notebook li.done { text-decoration: line-through; color: #6b604b; }
+#notebook .keys { font-size: 13px; color: #4a4030; font-family: 'VT323', monospace; font-size: 16px; }
+#banner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Special Elite', monospace; font-size: 64px; letter-spacing: 12px; color: #ff4a3a; text-shadow: 0 0 30px #600; }
