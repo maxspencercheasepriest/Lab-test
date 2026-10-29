@@ -51,12 +51,7 @@ Download from the repo's **Releases** page (right-hand side on GitHub):
 
 Everyone needs the same version of the app.
 
-**Building the apps yourself:** go to the repo's **Actions** tab → **Build desktop apps** → **Run workflow**. To publish a new Release, push a version tag:
-
-```bash
-npm version patch   # bumps the version and creates a tag like v1.0.1
-git push --follow-tags
-```
+**How the apps get built:** every push to `main` triggers GitHub Actions (the **Build desktop apps** workflow), which builds the `.exe` on a Windows machine and the `.dmg` on a Mac, then publishes them as a Release named after the `version` in `package.json`. Bump the version to make a new Release; otherwise the existing one is updated. You can also run it by hand from the **Actions** tab.
 
 Locally, `npm run desktop` runs the app from source, and `npm run dist:win` / `npm run dist:mac` build installers. A `.dmg` can only be built on a Mac.
 
