@@ -2,12 +2,12 @@
   "name": "the-programme",
   "version": "1.0.0",
   "description": "Co-op horror: survive the Lesson.",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "start": "node server/index.js",
-    "test": "node test/sim.test.js"
+    "test": "node test/sim.test.js",
+    "desktop": "electron .",
+    "dist:win": "electron-builder --win --publish never",
+    "dist:mac": "electron-builder --mac --publish never"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,10 @@
     "horror",
     "coop"
   ],
-  "author": "",
+  "author": {
+    "name": "Flick",
+    "email": "maxspencercheasepriest@gmail.com"
+  },
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/maxspencercheasepriest/lab-test/issues"
@@ -31,5 +34,79 @@
   "type": "module",
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "main": "electron/main.js",
+  "productName": "The Programme",
+  "build": {
+    "appId": "uk.flick.theprogramme",
+    "productName": "The Programme",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**",
+      "server/**",
+      "shared/**",
+      "public/**",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "The-Programme-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "The-Programme-Portable-${version}.exe"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "category": "public.app-category.games",
+      "icon": "build/icon.png",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "The Programme uses your microphone for proximity voice chat with friends."
+      }
+    },
+    "dmg": {
+      "artifactName": "The-Programme-${version}-mac.dmg"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game"
+    }
   }
 }

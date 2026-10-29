@@ -9,7 +9,6 @@ import { MAX_PLAYERS } from '../shared/constants.js';
 import { Lesson } from './game.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PORT = +process.env.PORT || 8080;
 
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -22,6 +21,7 @@ const ROUTES = [
   ['/', path.join(ROOT, 'public')],
 ];
 
+export function startServer({ port = +process.env.PORT || 8080, host = '0.0.0.0' } = {}) {
 const server = http.createServer((req, res) => {
   let url = decodeURIComponent((req.url || '/').split('?')[0]);
   if (url === '/healthz') { res.writeHead(200); return res.end('ok'); }
@@ -80,6 +80,7 @@ function createRoom() {
 }
 
 const wss = new WebSocketServer({ server });
+wss.on('error', () => {}); // listen errors are reported by startServer()
 
 wss.on('connection', (ws) => {
   const id = nextId++;
@@ -152,6 +153,17 @@ setInterval(() => {
   }
 }, 15000);
 
-server.listen(PORT, () => {
-  console.log(`The Programme is running on http://localhost:${PORT}`);
+return new Promise((resolve, reject) => {
+  server.once('error', reject);
+  server.listen(port, host, () => {
+    const actual = server.address().port;
+    console.log(`The Programme is running on http://localhost:${actual}`);
+    resolve({ server, port: actual });
+  });
 });
+}
+
+// Run directly with `node server/index.js` / `npm start`.
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  startServer().catch((e) => { console.error(e.message); process.exit(1); });
+}

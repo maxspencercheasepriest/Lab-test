@@ -48,6 +48,7 @@
         <div class="row">
           <button id="create">Create a room</button>
         </div>
+        <label class="desktop-only">Friend's address <input id="server" placeholder="e.g. 192.168.1.20:8080" autocomplete="off"></label>
         <div class="row">
           <input id="code" maxlength="4" placeholder="CODE" autocomplete="off">
           <button id="joinBtn">Join room</button>
@@ -57,6 +58,7 @@
 
       <div id="room" class="hidden">
         <p>Room code <b id="roomCode"></b> — send it to your friends.</p>
+        <p id="hostInfo" class="small"></p>
         <ul id="roster"></ul>
         <p id="micState" class="small"></p>
         <button id="start" class="hidden">Begin Lesson One</button>

@@ -72,13 +72,31 @@ $('name').value = localStorage.getItem('programme.name') || '';
 const params = new URLSearchParams(location.search);
 if (params.get('room')) $('code').value = params.get('room').toUpperCase();
 
+// Desktop app: the app runs its own server. Creating a room hosts on this computer;
+// joining a friend means typing their address.
+const desktop = window.programmeDesktop || null;
+if (desktop) {
+  document.body.classList.add('desktop');
+  $('server').value = localStorage.getItem('programme.server') || '';
+}
+
 async function join(code) {
   $('error').textContent = '';
   const name = $('name').value.trim() || 'Pupil';
   localStorage.setItem('programme.name', name);
   await sound.init();
   sound.resume();
-  try { await net.connect(); } catch { $('error').textContent = 'Could not reach the server.'; return; }
+  // Hosting (no code) always uses this computer. Joining uses the typed address, if any.
+  let addr = '';
+  if (desktop && code) {
+    addr = $('server').value.trim();
+    localStorage.setItem('programme.server', addr);
+  }
+  S.hosting = !code;
+  try { await net.connect(addr); } catch {
+    $('error').textContent = addr ? `Could not reach ${addr}. Check the address, and that the host has let the game through their firewall.` : 'Could not reach the server.';
+    return;
+  }
   await voice.start();
   net.send({ t: 'join', name, code });
 }
@@ -94,7 +112,17 @@ net.on('welcome', (m) => {
   $('join').classList.add('hidden');
   $('room').classList.remove('hidden');
   $('roomCode').textContent = m.code;
-  history.replaceState(null, '', `?room=${m.code}`);
+  if (!desktop) history.replaceState(null, '', `?room=${m.code}`);
+  $('hostInfo').innerHTML = '';
+  if (desktop && S.hosting) {
+    desktop.info().then(({ port, lan }) => {
+      const p = port === 80 ? '' : `:${port}`;
+      const local = lan.map(ip => `<b>${ip}${p}</b>`).join(' or ') || '(no network found)';
+      $('hostInfo').innerHTML = `You're hosting. Friends type your address and the code.<br>` +
+        `Same Wi-Fi / network: ${local}<br>` +
+        `Over the internet: forward port <b>${port}</b> (TCP) on your router to this computer, and give them your public IP with <b>${p || ':80'}</b> on the end.`;
+    });
+  }
 });
 net.on('lobby', (m) => {
   S.host = m.host;

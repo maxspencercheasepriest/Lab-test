@@ -35,7 +35,32 @@ If everyone is caught, the Lesson is failed.
 
 Headphones are strongly recommended. Chrome or Edge are the most reliable browsers; Firefox and Safari should work.
 
-## Running it
+## Desktop app (Windows .exe / Mac .dmg)
+
+Download from the repo's **Releases** page (right-hand side on GitHub):
+
+- **Windows:** `The-Programme-Setup-x.y.z.exe` (installer) or `The-Programme-Portable-x.y.z.exe` (runs without installing). The app isn't code-signed, so Windows SmartScreen will warn you. Click **More info → Run anyway**. Allow it through the firewall when asked, so friends can connect to you.
+- **Mac:** `The-Programme-x.y.z-mac.dmg` (Intel and Apple Silicon). Drag it to Applications. The first time, macOS will block it because it isn't from an identified developer. Open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway**. Allow the microphone when asked.
+
+**Playing together in the app:**
+
+1. The host clicks **Create a room**. The lobby shows their address and a 4-letter code.
+2. Friends type the host's address into **Friend's address**, enter the code, and click **Join room**.
+   - On the same network, use the address shown, e.g. `192.168.1.20:8080`.
+   - Over the internet, the host forwards **TCP port 8080** on their router to their computer, and friends use the host's public IP, e.g. `203.0.113.5:8080`. If you've deployed the server to Render, friends can type that `https://…onrender.com` address instead and skip port forwarding.
+
+Everyone needs the same version of the app.
+
+**Building the apps yourself:** go to the repo's **Actions** tab → **Build desktop apps** → **Run workflow**. To publish a new Release, push a version tag:
+
+```bash
+npm version patch   # bumps the version and creates a tag like v1.0.1
+git push --follow-tags
+```
+
+Locally, `npm run desktop` runs the app from source, and `npm run dist:win` / `npm run dist:mac` build installers. A `.dmg` can only be built on a Mac.
+
+## Running it from source (browser version)
 
 You need **Node.js 20 or newer**.
 
