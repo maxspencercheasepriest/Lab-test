@@ -14,22 +14,27 @@
 
   <!-- In-game HUD -->
   <div id="hud" class="hidden">
+    <div id="objectives">
+      <h3>LESSON ONE — HOMEWORK</h3>
+      <ul id="tasks"></ul>
+    </div>
+    <div id="eye"><svg viewBox="0 0 64 32"><path id="eyeOutline" d="M2 16 Q32 -6 62 16 Q32 38 2 16 Z"/><circle id="eyePupil" cx="32" cy="16" r="7"/></svg></div>
     <div id="prompt"></div>
     <div id="subtitle"></div>
     <div id="toast"></div>
+    <div id="center">
+      <div id="struggle" class="hidden"><b>STRUGGLE!</b> mash <kbd>E</kbd> / <kbd>Space</kbd><div class="bar"><i></i></div><div class="bar thin time"><i></i></div></div>
+      <div id="downedBox" class="hidden"><b>YOU'RE DOWN</b><span id="bleed"></span><small>Crawl to a friend. They hold <kbd>E</kbd> to get you up.</small></div>
+      <div id="progress" class="hidden"><span id="progressLabel"></span><div class="bar"><i></i></div></div>
+    </div>
     <div id="status">
+      <div id="health"><span>HEALTH</span><div class="bar"><i></i></div></div>
       <div id="battery"><span>NV</span><div class="bar"><i></i></div></div>
-      <div id="carry"></div>
+      <div id="inv"></div>
       <div id="mic"></div>
     </div>
-    <div id="hold"><i></i></div>
-    <div id="notebook" class="hidden">
-      <h2>Lesson One — Homework</h2>
-      <ul id="tasks"></ul>
-      <p class="keys">
-        WASD move · Shift run · C crouch · E use (hold for plate/lever) · Q / click throw bottle · G drop<br>
-        N night vision · hold R radio · M mute · Tab this notebook
-      </p>
+    <div id="keys" class="hidden">
+      WASD move · Shift run · C crouch · E use (hold for plate / lever / revive) · Q or click throw · F syringe · G drop · N night vision · hold R radio · M mute
     </div>
     <div id="banner" class="hidden"></div>
   </div>
@@ -68,8 +73,9 @@
       <p id="error" class="error"></p>
       <details>
         <summary>How to play</summary>
-        <p>Ring the four chapel bells. Return the three film reels to the projector. Someone stands on the plate in the old classroom to raise the gate, while someone else fetches the study key. Then unlock the exit and go home.</p>
-        <p>The Prefect hunts by sound. Walking is quiet, running is loud, crouching is silent. Talking carries. The bells carry everywhere. Hide in lockers. Throw bottles to lead him away. If he catches you, a friend can pull the lever in Correction to let you out.</p>
+        <p>Ring the four chapel bells. Find the three film reels (they move every Lesson) and return them to the projector. Someone stands on the plate in the old classroom to raise the gate while someone else fetches the study key. Then unlock the exit and go home.</p>
+        <p>The staff patrol the wing. If they glimpse you they'll come and look; if they get a proper look they'll chase. Walk quietly, crouch past them, mind the broken glass. Hide in lockers or under beds. Throw bottles and bricks to distract them — or hit them to stun. Slam doors in their faces.</p>
+        <p>The <b>Orderlies</b> beat you down; a friend can pick you up. The <b>Prefect</b> grabs you — mash E to struggle free, or he drags you to Correction, where a friend can pull the lever to let you out.</p>
       </details>
     </div>
   </div>

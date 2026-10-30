@@ -122,6 +122,7 @@ wss.on('connection', (ws) => {
       case 'act': room.lesson?.onAct(id, m); break;
       case 'hold': room.lesson?.onHold(id, m); break;
       case 'throw': room.lesson?.onThrow(id, m); break;
+      case 'struggle': room.lesson?.onStruggle(id); break;
       case 'leave': room.lesson?.onAct(id, { a: 'drop' }); break;
       case 'rtc': // WebRTC voice signalling relay
         if (room.players.has(m.to)) room.send(m.to, { t: 'rtc', from: id, data: m.data });

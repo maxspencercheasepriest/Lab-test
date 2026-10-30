@@ -308,4 +308,107 @@ export class Sound {
     this.noiseBurst(out, { dur: 1.4, freq: 500, q: 3, type: 'bandpass', gain: 0.5, attack: 0.5 });
     this.tone(out, { freq: 90 + Math.random() * 20, dur: 1.2, gain: 0.05, type: 'sawtooth', attack: 0.4 });
   }
+
+  // ---- added for v1.1 -------------------------------------------------------
+
+  glass(pos, self, muffled) {
+    if (!this.ctx) return;
+    const out = self ? this.selfOut() : this.spatial(pos.x, 0.1, pos.z, { muffled, refDistance: 2 }).input;
+    this.noiseBurst(out, { dur: 0.12, freq: 4500, type: 'highpass', gain: self ? 0.9 : 0.7 });
+    for (let i = 0; i < 5; i++) this.tone(out, { freq: 3000 + Math.random() * 5000, dur: 0.05 + Math.random() * 0.1, gain: 0.05, when: Math.random() * 0.08 });
+  }
+
+  // Orderlies mutter and hum tunelessly while they do their rounds.
+  mutter(pos, muffled) {
+    if (!this.ctx) return;
+    const out = this.spatial(pos.x, 1.6, pos.z, { muffled, refDistance: 2, rolloff: 1.8 }).input;
+    const ctx = this.ctx, t = ctx.currentTime;
+    const n = 3 + Math.floor(Math.random() * 5);
+    const base = 95 + Math.random() * 25;
+    const tune = Math.random() < 0.4;
+    for (let i = 0; i < n; i++) {
+      const when = i * (tune ? 0.32 : 0.14 + Math.random() * 0.12);
+      const o = ctx.createOscillator(); o.type = 'sawtooth';
+      const f = tune ? base * [1, 1.12, 1.26, 1.12, 1, 0.89, 1][i % 7] * 1.5 : base * (0.9 + Math.random() * 0.3);
+      o.frequency.setValueAtTime(f, t + when);
+      o.frequency.linearRampToValueAtTime(f * (0.85 + Math.random() * 0.3), t + when + 0.12);
+      const fl = ctx.createBiquadFilter(); fl.type = 'bandpass'; fl.frequency.value = 500 + Math.random() * 700; fl.Q.value = 4;
+      const g = ctx.createGain(); g.gain.setValueAtTime(0, t + when); g.gain.linearRampToValueAtTime(0.18, t + when + 0.03); g.gain.exponentialRampToValueAtTime(0.001, t + when + (tune ? 0.3 : 0.13));
+      o.connect(fl).connect(g).connect(out); o.start(t + when); o.stop(t + when + 0.4);
+    }
+  }
+
+  windup(pos) {
+    if (!this.ctx) return;
+    const out = this.spatial(pos.x, 1.6, pos.z, { refDistance: 2 }).input;
+    this.tone(out, { freq: 140, dur: 0.45, gain: 0.35, type: 'sawtooth', glide: 0.6, attack: 0.05 });
+    this.noiseBurst(out, { dur: 0.4, freq: 700, q: 4, type: 'bandpass', gain: 0.5, attack: 0.1 });
+  }
+
+  swing(pos, hit) {
+    if (!this.ctx) return;
+    const out = this.spatial(pos.x, 1.4, pos.z, { refDistance: 2 }).input;
+    this.noiseBurst(out, { dur: 0.25, freq: 1200, q: 1.5, type: 'bandpass', gain: 0.5, attack: 0.08 });
+    if (hit) { this.noiseBurst(this.master, { dur: 0.3, freq: 250, gain: 1.4, when: 0.12 }); this.tone(this.master, { freq: 55, dur: 0.35, gain: 0.9, glide: 0.5, when: 0.12 }); }
+  }
+
+  grab() {
+    if (!this.ctx) return;
+    this.noiseBurst(this.master, { dur: 0.6, freq: 300, gain: 1.2, attack: 0.001 });
+    this.tone(this.master, { freq: 80, dur: 1.2, gain: 0.6, type: 'sawtooth', glide: 0.7 });
+    for (const f of [98, 103.8, 146.8]) this.tone(this.master, { freq: f, dur: 2.5, gain: 0.08, type: 'sawtooth' });
+  }
+
+  struggle() {
+    if (!this.ctx) return;
+    this.noiseBurst(this.selfOut(), { dur: 0.08, freq: 400 + Math.random() * 300, gain: 0.5 });
+  }
+
+  stun(pos) {
+    if (!this.ctx) return;
+    const out = this.spatial(pos.x, 1.8, pos.z, { refDistance: 3 }).input;
+    this.tone(out, { freq: 220, dur: 0.9, gain: 0.3, type: 'sawtooth', glide: 0.4 });
+    this.noiseBurst(out, { dur: 0.5, freq: 600, q: 2, type: 'bandpass', gain: 0.6 });
+  }
+
+  slam(pos) {
+    if (!this.ctx) return;
+    const out = this.spatial(pos.x, 1.2, pos.z, { refDistance: 4, reverb: 0.8 }).input;
+    this.noiseBurst(out, { dur: 0.4, freq: 220, gain: 1.4, attack: 0.001 });
+    this.tone(out, { freq: 50, dur: 0.5, gain: 0.8, glide: 0.5 });
+  }
+
+  inject() {
+    if (!this.ctx) return;
+    this.noiseBurst(this.selfOut(), { dur: 0.15, freq: 6000, type: 'highpass', gain: 0.3 });
+    this.tone(this.selfOut(), { freq: 900, dur: 0.6, gain: 0.04, glide: 1.6, when: 0.1 });
+  }
+
+  downed() {
+    if (!this.ctx) return;
+    this.tone(this.master, { freq: 70, dur: 2.5, gain: 0.7, glide: 0.4, type: 'sawtooth' });
+    this.noiseBurst(this.master, { dur: 1.5, freq: 200, gain: 0.8 });
+  }
+
+  newEnemy() {
+    if (!this.ctx) return;
+    // A distant door crashing open somewhere in the building.
+    const a = Math.random() * Math.PI * 2;
+    const out = this.spatial(Math.cos(a) * 25, 1.5, Math.sin(a) * 25, { muffled: true, refDistance: 10, reverb: 1 }).input;
+    this.noiseBurst(out, { dur: 0.8, freq: 250, gain: 1.5, attack: 0.001 });
+  }
+
+  chimeTick() {
+    if (!this.ctx) return;
+    const out = this.ctx.createGain(); out.gain.value = 0.5; out.connect(this.master);
+    this.tone(out, { freq: 880, dur: 0.5, gain: 0.12 });
+    this.tone(out, { freq: 1320, dur: 0.7, gain: 0.08, when: 0.08 });
+  }
+
+  bed(pos, muffled) {
+    if (!this.ctx) return;
+    const out = this.spatial(pos.x, 0.5, pos.z, { muffled, refDistance: 2 }).input;
+    for (const f of [180, 260]) this.tone(out, { freq: f, dur: 0.4, gain: 0.05, type: 'triangle', glide: 1.3 });
+    this.noiseBurst(out, { dur: 0.2, freq: 500, gain: 0.25 });
+  }
 }

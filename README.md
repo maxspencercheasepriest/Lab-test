@@ -2,21 +2,23 @@
 
 *A residential behavioural course. Pennines, 1974.*
 
-A co-op horror game for 1–4 players that runs in the browser (Mac, PC and Linux, with cross-play). You're volunteers on a reform course. Every night is a Lesson: finish the tasks, get out, and don't let the Prefect take you to Correction.
+A co-op horror game for 1–4 players in the spirit of *The Outlast Trials*. Runs on Mac, PC and Linux, with cross-play. You're volunteers on a reform course. Every night is a Lesson: finish the tasks, get out, and don't let the staff take you to Correction.
 
-- **The Prefect hunts by sound.** Walking is quiet, running is loud, crouching is silent. Your voice carries. The bells carry everywhere.
-- **Night vision is a small green tube.** Around it, your naked-eye periphery is dark and blurry, but it gets more sensitive towards the edges of the screen and catches movement.
-- **Proximity voice chat.** Friends sound like they're where they are, muffled through walls. Hold **R** for the crackly radio, which everyone hears.
-- **No weapons.** Hide in lockers, throw bottles to lead him away, and pull the lever in Correction to free caught friends.
+- **The staff patrol.** The Prefect and his Orderlies walk the wing room to room, lingering, looking about and checking lockers and beds. They don't know where you are. A glimpse makes them come and look; a proper look starts a chase. Noises send them to investigate. Lose them and they search the area, then go back to their rounds. An eye at the top of the screen shows when you're being noticed.
+- **Two kinds of enemy.** **Orderlies** beat you down with a cosh. When you're downed, crawl to a friend so they can pick you up before you bleed out. **The Prefect** grabs you: mash **E/Space** to struggle free, or he drags you to Correction. A friend can free you by throwing something at him, or later by pulling the lever in Correction.
+- **No weapons, just tricks.** Hide in lockers or under beds. Throw bottles and bricks to distract, or hit an enemy to stun it. Slam doors in their faces. Crouch past broken glass. Use syringes to heal.
+- **Night vision is all you've got.** A small green tube in the middle of your view. Outside it, your eyes in the dark: almost black. Only real light gets through, like the Prefect's lantern or the exit sign. Your hands sit at the bottom of the tube.
+- **Proximity voice chat.** Friends sound like they're where they are. Quiet talk is safe; shouting carries. Hold **R** for the radio.
+- **It escalates.** The bells put the lanterns out. Returning the reels lets another Orderly loose. Taking the key draws the staff towards the exit.
 
-## Lesson One: the tasks
+## Lesson One: the tasks (always on screen, ticked off as you go)
 
-1. Ring the four chapel bells. Everyone hears them, including the Prefect.
-2. Return the three film reels to the projector.
-3. One player stands on the pressure plate in the old classroom to raise the gate. Another goes into the study for the key. The gate closes behind them if the plate is released.
-4. Unlock the exit (south wall, east wing) and go home.
+1. Ring the four chapel bells. Everyone hears them, staff included.
+2. Find the three film reels and return them to the projector. They're hidden somewhere different every Lesson.
+3. One player stands on the pressure plate in the Old Classroom to raise the study gate. Another goes in for the key. The gate drops if the plate is released.
+4. Unlock the exit in the Entrance Hall and go home.
 
-If everyone is caught, the Lesson is failed.
+If everyone is caught or down, the Lesson is failed.
 
 ## Controls
 
@@ -24,14 +26,16 @@ If everyone is caught, the Lesson is failed.
 | --- | --- |
 | WASD / mouse | Move / look |
 | Shift | Run (loud, limited stamina) |
-| C (toggle) or Ctrl (hold) | Crouch (silent) |
-| E | Use. Hold for the plate and the lever |
-| Q or left click | Throw bottle |
+| C (toggle) or Ctrl (hold) | Crouch (silent, harder to spot) |
+| E | Use. Hold for the plate, the lever and helping a friend up |
+| E / Space (mash) | Struggle when grabbed |
+| Q or left click | Throw bottle / brick |
+| F | Use a syringe |
 | G | Drop what you're carrying |
 | N | Night vision on/off (saves battery) |
 | R (hold) | Radio |
 | M | Mute mic |
-| Tab (hold) | Notebook / task list |
+| Tab (hold) | Show controls |
 
 Headphones are strongly recommended. Chrome or Edge are the most reliable browsers; Firefox and Safari should work.
 
@@ -96,8 +100,8 @@ Voice is peer-to-peer (WebRTC) using public STUN servers. This works on most hom
 
 ## Tuning and modding
 
-- **`shared/map.js`**: the level as ASCII art. The legend is at the top of the file. Edit it, restart, and the level rebuilds. Every row must be the same width.
-- **`shared/constants.js`**: speeds, hearing distances, vision, battery life, and so on. Most of the game's feel lives here.
+- **`shared/map.js`**: the level as ASCII art, plus the list of rooms the staff patrol. The legend is at the top of the file. Edit it, restart, and the level rebuilds. Every row must be the same width.
+- **`shared/constants.js`**: speeds, hearing, how quickly the staff notice you, damage, grab difficulty, battery life, and so on. Most of the game's feel lives here.
 - **`shared/tannoy.js`**: everything the Presenter says.
 - **`public/js/nightvision.js`**: the night-vision and periphery shader.
 - In the browser console, `__programme.TUNE.irPower` changes night-vision brightness live.
@@ -106,6 +110,6 @@ Running the server with `DEV=1 npm start` turns off the anti-teleport check, whi
 
 ## How it's built
 
-- `server/`: Node + `ws`. The server is authoritative for the Prefect AI (patrol → investigate → search → chase), tasks, catching and freeing, at 15 ticks a second.
-- `public/`: Three.js, no build step. Procedural textures and fully synthesised audio, so there are no asset files.
+- `server/`: Node + `ws`. The server is authoritative for the enemy AI (`server/enemy.js`: room-to-room patrol → curious → investigate → search → chase → attack/grab), health, tasks, catching and freeing, at 15 ticks a second.
+- `public/`: Three.js, no build step. Procedural textures and fully synthesised audio, so there are no asset files. First-person arms are in `public/js/arms.js`.
 - `shared/`: map, grid maths (collision, line of sight, A*) and tuning, used by both sides.

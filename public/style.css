@@ -25,28 +25,73 @@ summary { cursor: pointer; color: #cfe8cf; }
 
 /* HUD */
 #hud { position: fixed; inset: 0; pointer-events: none; }
-#prompt { position: absolute; left: 50%; top: 62%; transform: translateX(-50%); font-size: 24px; color: #dfffe0; text-shadow: 0 0 6px #000, 0 0 2px #000; }
+kbd { font: inherit; border: 1px solid currentColor; padding: 0 5px; border-radius: 3px; }
+.bar { height: 7px; border: 1px solid #3c7a46; width: 100%; }
+.bar i { display: block; height: 100%; width: 0; background: #4cff6a; transition: width 0.1s; }
+
+#objectives { position: absolute; left: 22px; top: 18px; width: 340px; color: #cfe8cf; text-shadow: 0 0 6px #000, 0 0 2px #000; }
+#objectives h3 { margin: 0 0 6px; font-weight: normal; font-size: 17px; letter-spacing: 3px; color: #7fbf86; }
+#tasks { list-style: none; margin: 0; padding: 0; font-size: 20px; line-height: 1.2; }
+#tasks li { position: relative; padding-left: 26px; margin-bottom: 3px; transition: color 0.6s; }
+#tasks li::before { content: ''; position: absolute; left: 0; top: 5px; width: 13px; height: 13px; border: 1px solid #7fbf86; }
+#tasks li.done { color: #5b7a5e; text-decoration: line-through; text-decoration-color: #3c7a46; }
+#tasks li.done::before { background: #3c7a46; border-color: #4cff6a; }
+#tasks li.done::after { content: '✓'; position: absolute; left: 1px; top: -3px; color: #dfffe0; font-size: 18px; }
+#tasks li.locked { color: #4c5f4e; }
+#tasks li.just { animation: tick 1.6s ease-out; }
+#tasks li .sub { display: block; font-size: 15px; color: #7b9a7d; }
+@keyframes tick { 0% { color: #fff; text-shadow: 0 0 14px #4cff6a; transform: translateX(8px); } 100% { transform: none; } }
+
+#eye { position: absolute; left: 50%; top: 22px; transform: translateX(-50%); width: 64px; height: 32px; opacity: 0; transition: opacity 0.3s; }
+#eye svg { width: 100%; height: 100%; overflow: visible; }
+#eyeOutline { fill: none; stroke: #e8e2d0; stroke-width: 2.5; }
+#eyePupil { fill: #e8e2d0; }
+#eye.alert #eyeOutline, #eye.alert #eyePupil { stroke: #ff4a3a; fill: #ff4a3a; }
+#eye.alert #eyeOutline { fill: none; }
+#eye.alert { animation: pulse 0.5s infinite alternate; }
+@keyframes pulse { to { transform: translateX(-50%) scale(1.15); } }
+
+#prompt { position: absolute; left: 50%; top: 66%; transform: translateX(-50%); font-size: 24px; color: #dfffe0; text-shadow: 0 0 6px #000, 0 0 2px #000; white-space: nowrap; }
 #subtitle { position: absolute; left: 50%; bottom: 9%; transform: translateX(-50%); width: min(780px, 90vw); text-align: center; font-family: 'Special Elite', monospace; font-size: 20px; color: #f0e6c8; text-shadow: 0 0 8px #000, 0 0 3px #000; opacity: 0; transition: opacity 0.6s; }
 #subtitle.show { opacity: 1; }
 #subtitle::before { content: 'TANNOY: '; color: #b9a26a; }
-#toast { position: absolute; left: 50%; top: 20%; transform: translateX(-50%); font-size: 24px; color: #ffe0c0; text-shadow: 0 0 6px #000; opacity: 0; transition: opacity 0.4s; }
+#toast { position: absolute; left: 50%; top: 18%; transform: translateX(-50%); font-size: 24px; color: #ffe0c0; text-shadow: 0 0 6px #000; opacity: 0; transition: opacity 0.4s; white-space: nowrap; }
 #toast.show { opacity: 1; }
-#status { position: absolute; left: 22px; bottom: 18px; font-size: 20px; color: #7fbf86; display: flex; flex-direction: column; gap: 4px; text-shadow: 0 0 4px #000; }
-#battery { display: flex; align-items: center; gap: 8px; }
-#battery .bar { width: 90px; height: 9px; border: 1px solid #3c7a46; }
-#battery .bar i { display: block; height: 100%; background: #4cff6a; width: 100%; }
+
+#center { position: absolute; left: 50%; top: 73%; transform: translateX(-50%); width: 320px; text-align: center; text-shadow: 0 0 6px #000; }
+#struggle b { display: block; font-size: 34px; color: #ff5a3a; letter-spacing: 4px; animation: pulse2 0.25s infinite alternate; }
+@keyframes pulse2 { to { transform: scale(1.06); } }
+#struggle { font-size: 20px; color: #ffd0c0; }
+#struggle .bar { margin-top: 8px; height: 12px; border-color: #ff5a3a; }
+#struggle .bar i { background: #ffb08a; }
+#struggle .bar.thin { height: 4px; margin-top: 4px; }
+#struggle .bar.thin i { background: #ff5a3a; }
+#downedBox b { display: block; font-size: 30px; color: #ff5a3a; letter-spacing: 4px; }
+#downedBox span { display: block; font-size: 22px; color: #ffd0c0; }
+#downedBox small { font-size: 17px; color: #c8a8a0; }
+#progress { font-size: 20px; color: #dfffe0; }
+#progress .bar { margin-top: 6px; height: 8px; }
+#progress .bar i { background: #9fffaa; }
+
+#status { position: absolute; left: 22px; bottom: 18px; width: 230px; font-size: 19px; color: #7fbf86; display: flex; flex-direction: column; gap: 5px; text-shadow: 0 0 4px #000; }
+#health, #battery { display: grid; grid-template-columns: 74px 1fr; align-items: center; gap: 8px; }
+#health .bar { border-color: #8a4a3a; }
+#health .bar i { background: #e05a3a; }
+#health.low { animation: pulse3 0.7s infinite alternate; }
+@keyframes pulse3 { to { opacity: 0.55; } }
 #battery.low .bar i { background: #ff5a3a; }
+#inv { color: #cfe8cf; }
 #mic.on { color: #dfffe0; }
-#hold { position: absolute; left: 50%; top: 58%; transform: translateX(-50%); width: 160px; height: 6px; border: 1px solid #3c7a46; display: none; }
-#hold.show { display: block; }
-#hold i { display: block; height: 100%; background: #9fffaa; width: 0; }
-#notebook { position: absolute; right: 30px; top: 30px; width: 380px; padding: 18px 22px; background: #d9d2bd; color: #2a2318; font-family: 'Special Elite', monospace; transform: rotate(1.2deg); box-shadow: 4px 6px 0 rgba(0,0,0,0.6); }
-#notebook h2 { margin: 0 0 10px; font-weight: normal; font-size: 20px; }
-#notebook ul { padding-left: 18px; font-size: 18px; line-height: 1.5; }
-#notebook li.done { text-decoration: line-through; color: #6b604b; }
-#notebook .keys { font-size: 13px; color: #4a4030; font-family: 'VT323', monospace; font-size: 16px; }
+#keys { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); font-size: 16px; color: #7fbf86; text-shadow: 0 0 4px #000; white-space: nowrap; }
 #banner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Special Elite', monospace; font-size: 64px; letter-spacing: 12px; color: #ff4a3a; text-shadow: 0 0 30px #600; }
 
 .desktop-only { display: none; }
 body.desktop .desktop-only { display: block; }
 #hostInfo b { color: #e8e2d0; font-weight: normal; }
+
+/* Shorter screens: compact objective list. */
+@media (max-height: 760px) {
+  #tasks { font-size: 17px; }
+  #tasks li .sub { display: none; }
+  #objectives h3 { font-size: 15px; }
+}
